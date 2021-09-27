@@ -18,16 +18,18 @@ class Batch(object):
     def __init__(self, src, segs, tags, device=None):
         """Create a Batch from a list of examples."""
         self.batch_size = 1
-        src = torch.tensor([src])
+        src = np.array([src])
         segs = torch.tensor([segs])
         mask_src = 1 - (src == 0)
         tag_src = torch.tensor([tags], dtype=torch.float)
 
-        setattr(self, 'src', src.to(device))
+        setattr(self, 'src', torch.from_numpy(src).to(device))
         setattr(self, 'segs', segs.to(device))
-        setattr(self, 'mask_src', mask_src.to(device))
+        setattr(self, 'mask_src', torch.from_numpy(mask_src).to(device))
         setattr(self, 'tag_src', tag_src.to(device))
 
+
+        
     def __len__(self):
         return self.batch_size
 
